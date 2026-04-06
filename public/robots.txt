@@ -1,0 +1,51 @@
+User-agent: *
+Allow: /
+
+# Block admin and sensitive areas
+Disallow: /admin/
+Disallow: /account/
+Disallow: /merchant/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /_ignition/
+Disallow: /telescope/
+Disallow: /horizon/
+
+# Block temporary and system files
+Disallow: /storage/
+Disallow: /bootstrap/
+Disallow: /config/
+Disallow: /vendor/
+Disallow: /artisan
+Disallow: /.env
+Disallow: /composer.json
+Disallow: /composer.lock
+
+# Block search and filter parameters
+Disallow: /*?search=
+Disallow: /*?sort=
+Disallow: /*?filter=
+Disallow: /*?page=
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: {{ url('/sitemap.xml') }}
+Sitemap: {{ url('/sitemap-products.xml') }}
+Sitemap: {{ url('/sitemap-categories.xml') }}
+Sitemap: {{ url('/sitemap-brands.xml') }}
+
+# Special rules for common bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1

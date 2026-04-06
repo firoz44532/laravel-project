@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', \App\Services\SettingsService::get('site_name', 'E-Commerce Store')) - @if(\App\Services\SettingsService::get('site_tagline')){{ \App\Services\SettingsService::get('site_tagline') }}@else Bangladesh Online Shopping @endif</title>
+    <meta name="description" content="{{ \App\Services\SettingsService::get('site_description', 'Shop online for electronics, fashion, groceries and more. Best prices in Bangladesh with fast delivery.') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{{ \App\Services\SettingsService::get('site_description', 'Shop online for electronics, fashion, groceries and more. Best prices in Bangladesh with fast delivery.') }}">
+    <meta name="keywords" content="{{ \App\Services\SettingsService::get('site_keywords', 'online shopping, Bangladesh, e-commerce, electronics, fashion, groceries, best prices, fast delivery') }}">
+    <meta name="author" content="{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="language" content="en">
+    <meta name="geo.region" content="BD">
+    <meta name="geo.country" content="Bangladesh">
+    <meta name="currency" content="BDT">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="@yield('title', \App\Services\SettingsService::get('site_name', 'ShopBD'))">
+    <meta property="og:description" content="{{ \App\Services\SettingsService::get('site_description', 'Shop online for electronics, fashion, groceries and more. Best prices in Bangladesh with fast delivery.') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}">
+    <meta property="og:locale" content="en_BD">
+    @if(\App\Services\SettingsService::get('site_logo'))
+        <meta property="og:image" content="{{ asset(\App\Services\SettingsService::get('site_logo')) }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+    @endif
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', \App\Services\SettingsService::get('site_name', 'ShopBD'))">
+    <meta name="twitter:description" content="{{ \App\Services\SettingsService::get('site_description', 'Shop online for electronics, fashion, groceries and more. Best prices in Bangladesh with fast delivery.') }}">
+    <meta name="twitter:site" content="@shopbd">
+    @if(\App\Services\SettingsService::get('site_logo'))
+        <meta name="twitter:image" content="{{ asset(\App\Services\SettingsService::get('site_logo')) }}">
+    @endif
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
+    
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="bn" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="theme-color" content="#ff6b35">
+    <meta name="msapplication-TileColor" content="#ff6b35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="{{ asset('fonts/inter-v12-latin-regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('images/placeholder-product.jpg') }}" as="image">
+    
+    <!-- DNS Prefetch for External Resources -->
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    
+    <!-- Preconnect for Critical External Resources -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    
+    @vite(['resources/css/app.css'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Additional meta tags stack -->
+    @stack('meta-tags')
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}",
+        "url": "{{ url('/') }}",
+        "logo": "{{ \App\Services\SettingsService::get('site_logo') ? asset(\App\Services\SettingsService::get('site_logo')) : asset('/images/logo.png') }}",
+        "description": "{{ \App\Services\SettingsService::get('site_description', 'Shop online for electronics, fashion, groceries and more. Best prices in Bangladesh with fast delivery.') }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Bangladesh",
+            "addressLocality": "Dhaka",
+            "postalCode": "1000",
+            "streetAddress": "123 Main Street"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "{{ \App\Services\SettingsService::get('contact_phone', '+880 1234 567890') }}",
+            "contactType": "customer service",
+            "areaServed": "Bangladesh",
+            "availableLanguage": ["en", "bn"]
+        },
+        "sameAs": [
+            "{{ \App\Services\SettingsService::get('facebook_url', '#') }}",
+            "{{ \App\Services\SettingsService::get('instagram_url', '#') }}",
+            "{{ \App\Services\SettingsService::get('youtube_url', '#') }}"
+        ]
+    }
+    </script>
+    
+<!-- Voice System Preload -->
+    <script>
+        // Voice system initialization
+        window.voiceSystemReady = false;
+        window.voiceSystemLoaded = false;
+        
+        // Simple inline voice system as fallback
+        window.SimpleVoiceSystem = {
+            isEnabled: true,
+            synth: null,
+            voices: [],
+            
+            init: function() {
+                if ('speechSynthesis' in window) {
+                    this.synth = window.speechSynthesis;
+                    this.voices = this.synth.getVoices();
+                    console.log('Simple voice system initialized');
+                    return true;
+                }
+                return false;
+            },
+            
+            speak: function(text, options = {}) {
+                if (!this.isEnabled || !this.synth) return;
+                
+                try {
+                    this.synth.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.volume = options.volume || 0.8;
+                    utterance.rate = options.rate || 1.0;
+                    utterance.pitch = options.pitch || 1.0;
+                    this.synth.speak(utterance);
+                } catch (e) {
+                    console.error('Speech error:', e);
+                }
+            },
+            
+            toggle: function() {
+                this.isEnabled = !this.isEnabled;
+                if (this.isEnabled) {
+                    this.speak('Voice enabled');
+                }
+                return this.isEnabled;
+            }
+        };
+        
+        // Initialize simple voice system immediately
+        if (window.SimpleVoiceSystem.init()) {
+            window.voiceSystemLoaded = true;
+            window.VoiceNotifications = window.SimpleVoiceSystem;
+            window.voiceSystem = window.SimpleVoiceSystem;
+            console.log('Simple voice system loaded successfully');
+        }
+        
+        // Try to load full voice system when scripts are loaded
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (window.VoiceNotifications && window.VoiceNotifications !== window.SimpleVoiceSystem) {
+                    window.voiceSystemLoaded = true;
+                    console.log('Full voice system loaded successfully');
+                    
+                    // Update button state
+                    const button = document.getElementById('voice-control-button');
+                    if (button) {
+                        const icon = button.querySelector('i');
+                        if (window.voiceSystem.isEnabled) {
+                            button.style.backgroundColor = '#10B981';
+                            icon.className = 'fas fa-microphone';
+                        } else {
+                            button.style.backgroundColor = '#EF4444';
+                            icon.className = 'fas fa-microphone-slash';
+                        }
+                    }
+                } else if (window.SimpleVoiceSystem.init()) {
+                    console.log('Using simple voice system');
+                    window.VoiceNotifications = window.SimpleVoiceSystem;
+                    window.voiceSystem = window.SimpleVoiceSystem;
+                    window.voiceSystemLoaded = true;
+                } else {
+                    console.error('Voice system failed to load');
+                }
+            }, 500);
+        });
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center py-2 text-sm border-b">
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600"><i class="fas fa-phone"></i> Hotline: {{ \App\Services\SettingsService::get('contact_phone', '12345') }}</span>
+                    <span class="text-gray-600"><i class="fas fa-envelope"></i> {{ \App\Services\SettingsService::get('contact_email', 'support@shop.com') }}</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    @auth
+                        <a href="{{ route('account.dashboard') }}" class="text-gray-600 hover:text-primary">
+                            <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                        </a>
+                        @if(!Auth::user()->merchant)
+                            <a href="{{ route('merchant.register') }}" class="text-gray-600 hover:text-primary">
+                                <i class="fas fa-store"></i> Become a Merchant
+                            </a>
+                        @endif
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-gray-600 hover:text-primary">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="{{ route('register') }}" class="text-gray-600 hover:text-primary">
+                            <i class="fas fa-user-plus"></i> Register
+                        </a>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- Main Header -->
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{{ route('home') }}" class="flex items-center">
+                        @if(\App\Services\SettingsService::get('site_logo'))
+                            @php
+                                $logoUrl = \App\Services\SettingsService::get('site_logo');
+                                // Convert full URL to path if needed
+                                if(str_starts_with($logoUrl, 'http://') || str_starts_with($logoUrl, 'https://')) {
+                                    $logoUrl = str_replace(['http://localhost/', 'http://127.0.0.1/', 'https://localhost/', 'https://127.0.0.1/'], '', $logoUrl);
+                                }
+                            @endphp
+                            <img src="{{ asset($logoUrl) }}" alt="{{ \App\Services\SettingsService::get('site_name', 'Shop') }}" class="h-10 w-auto mr-3">
+                            <h1 class="text-2xl font-bold text-primary">{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}</h1>
+                        @else
+                            <h1 class="text-2xl font-bold text-primary">{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}</h1>
+                        @endif
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl mx-8">
+                    <form action="{{ route('products.index') }}" method="GET" class="relative">
+                        <input type="text" name="search" placeholder="Search for products..." 
+                               value="{{ request('search') }}"
+                               class="w-full px-4 py-2 pr-12 border rounded-full focus:outline-none focus:border-primary">
+                        <button type="submit" class="absolute right-0 top-0 h-full px-4 bg-primary text-white rounded-full hover:bg-orange-600">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Cart & Account -->
+                <div class="flex items-center space-x-4">
+                    @auth
+                    <a href="{{ route('wishlist.index') }}" class="relative text-gray-600 hover:text-primary">
+                        <i class="fas fa-heart text-xl"></i>
+                        <span id="wishlist-count" class="wishlist-count absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full px-1" style="display: none;">0</span>
+                    </a>
+                    @else
+                    <a href="{{ route('login') }}" class="relative text-gray-600 hover:text-primary" title="Login to view wishlist">
+                        <i class="fas fa-heart text-xl"></i>
+                        <span id="wishlist-count" class="wishlist-count absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full px-1" style="display: none;">0</span>
+                    </a>
+                    @endauth
+                    <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">0</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category Menu -->
+            <nav class="py-3">
+                <div class="flex items-center space-x-8">
+                    <!-- Categories Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-2 text-gray-700 hover:text-primary">
+                            <i class="fas fa-bars"></i>
+                            <span>All Categories</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-2">
+                                <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                    <i class="fas fa-th-large mr-2"></i>All Categories
+                                </a>
+                                @if(isset($categories) && $categories)
+                                    @foreach($categories->take(10) as $category)
+                                        <a href="{{ route('products.category', $category->slug) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                            <i class="fas fa-folder mr-2"></i>{{ $category->name }}
+                                        </a>
+                                    @endforeach
+                                @endif
+                                <a href="{{ route('brands.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                    <i class="fas fa-industry mr-2"></i>Shop by Brand
+                                </a>
+                                <a href="{{ route('products.vendors') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                    <i class="fas fa-store mr-2"></i>All Vendors
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Category Links -->
+                    @if(isset($categories) && $categories)
+                        @foreach($categories->take(5) as $category)
+                            <a href="{{ route('products.category', $category->slug) }}" class="text-gray-700 hover:text-primary">{{ $category->name }}</a>
+                        @endforeach
+                    @endif
+                    
+                    <!-- All Vendors Link -->
+                    <a href="{{ route('products.vendors') }}" class="flex items-center space-x-2 text-purple-600 hover:text-purple-700 font-medium">
+                        <i class="fas fa-store"></i>
+                        <span>All Vendors</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <a href="{{ route('home') }}" class="inline-block mb-4">
+                        @if(\App\Services\SettingsService::get('site_logo'))
+                            @php
+                                $footerLogoUrl = \App\Services\SettingsService::get('site_logo');
+                                if(str_starts_with($footerLogoUrl, 'http://') || str_starts_with($footerLogoUrl, 'https://')) {
+                                    $footerLogoUrl = str_replace(['http://localhost/', 'http://127.0.0.1/', 'https://localhost/', 'https://127.0.0.1/'], '', $footerLogoUrl);
+                                }
+                            @endphp
+                            <img src="{{ asset($footerLogoUrl) }}" alt="{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}" class="h-12 w-auto">
+                        @else
+                            <h3 class="text-2xl font-bold text-white">{{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}</h3>
+                        @endif
+                    </a>
+                    <p class="text-gray-400">{{ \App\Services\SettingsService::get('site_tagline', 'Your trusted online shopping destination in Bangladesh.') }}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{{ route('about') }}" class="hover:text-white">About Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>
+                        <li><a href="{{ route('faq') }}" class="hover:text-white">FAQ</a></li>
+                        <li><a href="{{ route('categories.index') }}" class="hover:text-white">Categories</a></li>
+                        <li><a href="{{ route('brands.index') }}" class="hover:text-white">Brands</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Customer Service</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{{ route('shipping') }}" class="hover:text-white">Shipping Info</a></li>
+                        <li><a href="{{ route('returns') }}" class="hover:text-white">Returns</a></li>
+                        <li><a href="{{ route('privacy') }}" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="{{ route('terms') }}" class="hover:text-white">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 {{ \App\Services\SettingsService::get('site_name', 'ShopBD') }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    @vite('resources/js/app.js')
+
+<script>
+// Cart functionality
+function addToCart(productId, quantity = 1) {
+    fetch('/cart/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateCartCount(data.cart_count);
+            showNotification(data.message, 'success');
+        } else {
+            showNotification(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error adding to cart', 'error');
+    });
+}
+
+function updateCartCount(count) {
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = count > 0 ? 'block' : 'none';
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full`;
+    
+    // Set color based on type
+    const colors = {
+        success: 'bg-green-500 text-white',
+        error: 'bg-red-500 text-white',
+        info: 'bg-blue-500 text-white',
+        warning: 'bg-yellow-500 text-white'
+    };
+    
+    notification.className += ' ' + colors[type];
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Update cart count on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/cart-count')
+        .then(response => response.json())
+        .then(data => {
+            updateCartCount(data.count);
+        })
+        .catch(error => {
+            console.error('Error fetching cart count:', error);
+        });
+
+    // Update wishlist count on page load (only if authenticated)
+    @auth
+    fetch('/wishlist/count')
+        .then(response => response.json())
+        .then(data => {
+            updateWishlistCount(data.count);
+        })
+        .catch(error => {
+            console.error('Error fetching wishlist count:', error);
+        });
+    @endauth
+
+    // Add to Cart functionality
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const productName = this.dataset.productName;
+            
+            // Disable button and show loading
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = 'Adding...';
+            
+            // Send AJAX request to add to cart
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                                   document.querySelector('input[name="_token"]')?.value
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    updateCartCount(data.cart_count);
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to cart:', error);
+                showNotification('Error adding product to cart', 'error');
+            })
+            .finally(() => {
+                // Re-enable button and restore text
+                this.disabled = false;
+                this.textContent = originalText;
+            });
+        });
+    });
+});
+
+// Function to update cart count in the UI
+function updateCartCount(count) {
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = count > 0 ? 'block' : 'none';
+    }
+    
+    // Also update any elements with cart-count class
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(element => {
+        element.textContent = count;
+    });
+}
+
+// Function to update wishlist count in the UI
+function updateWishlistCount(count) {
+    const wishlistCountElement = document.getElementById('wishlist-count');
+    if (wishlistCountElement) {
+        wishlistCountElement.textContent = count;
+        wishlistCountElement.style.display = count > 0 ? 'block' : 'none';
+    }
+    
+    // Also update any elements with wishlist-count class
+    const wishlistCountElements = document.querySelectorAll('.wishlist-count');
+    wishlistCountElements.forEach(element => {
+        element.textContent = count;
+        element.style.display = count > 0 ? 'block' : 'none';
+    });
+}
+</script>
+
+<!-- WhatsApp Chat Widget - Simple Version -->
+@if(!(request()->routeIs('products.show') && request()->route('slug') === 'sony-wh-1000xm5'))
+<div id="whatsapp-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <a href="https://wa.me/1234567890" style="display: block; width: 60px; height: 60px; background-color: #25D366; 
+              border-radius: 50%; text-align: center; line-height: 60px; 
+              box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;
+              text-decoration: none;">
+        <i class="fab fa-whatsapp" style="color: white; font-size: 28px; vertical-align: middle;"></i>
+    </a>
+    <style>
+        /* Critical above-the-fold styles */
+        .hero-section { min-height: 400px; }
+        .loading-skeleton { 
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .lazy { 
+            opacity: 0; 
+            transition: opacity 0.3s;
+        }
+        .lazy.loaded { 
+            opacity: 1; 
+        }
+
+        /* 5G-optimized animations */
+        .enhanced-animations * {
+            animation-duration: 0.3s !important;
+            transition-duration: 0.3s !important;
+        }
+
+        /* Network-aware responsive images */
+        @media (min-width: 768px) {
+            .hero-section img {
+                transform: scale(1.05);
+                transition: transform 0.3s ease;
+            }
+        }
+
+        /* 5G performance indicators */
+        .network-5g::before {
+            content: "5G";
+            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 10;
+        }
+    </style>
+</div>
+
+<!-- Voice Control Button -->
+<div id="voice-control-button" style="position: fixed; bottom: 90px; right: 20px; z-index: 9999;">
+    <button onclick="toggleVoiceControl()" 
+            style="display: block; width: 50px; height: 50px; background-color: #8B5CF6; 
+                   border-radius: 50%; text-align: center; line-height: 50px; 
+                   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); transition: all 0.3s ease;
+                   border: none; cursor: pointer; color: white;"
+            title="Voice Controls (Ctrl+V)">
+        <i class="fas fa-microphone" style="font-size: 20px; vertical-align: middle;"></i>
+    </button>
+</div>
+@endif
+
+<script>
+// Voice control functions
+function toggleVoiceControl() {
+    console.log('Voice button clicked!');
+    
+    // Check if voice system is loaded
+    if (typeof window.VoiceNotifications === 'undefined') {
+        console.error('VoiceNotifications not loaded yet!');
+        
+        if (!window.voiceSystemLoaded) {
+            // Try to initialize simple voice system
+            if (window.SimpleVoiceSystem && window.SimpleVoiceSystem.init()) {
+                window.VoiceNotifications = window.SimpleVoiceSystem;
+                window.voiceSystem = window.SimpleVoiceSystem;
+                window.voiceSystemLoaded = true;
+                console.log('Simple voice system initialized on demand');
+                toggleVoiceControl(); // Retry after initialization
+                return;
+            }
+            
+            // Show loading state
+            const button = document.getElementById('voice-control-button');
+            if (button) {
+                button.style.backgroundColor = '#F59E0B'; // Yellow for loading
+                showVoiceNotification('Voice system loading... Please wait');
+                
+                // Try to load voice system manually
+                setTimeout(() => {
+                    if (window.VoiceNotifications) {
+                        toggleVoiceControl(); // Retry after loading
+                    } else {
+                        showVoiceNotification('Voice system not supported by this browser');
+                    }
+                }, 2000);
+            }
+        } else {
+            showVoiceNotification('Voice system failed to load. Please refresh the page.');
+        }
+        return;
+    }
+    
+    if (typeof window.voiceSystem === 'undefined') {
+        console.error('Voice system not initialized!');
+        showVoiceNotification('Voice system not initialized. Please refresh the page.');
+        return;
+    }
+    
+    console.log('Toggling voice, current state:', window.voiceSystem.isEnabled);
+    
+    try {
+        window.VoiceNotifications.toggle();
+        const button = document.getElementById('voice-control-button');
+        const icon = button.querySelector('i');
+        
+        if (window.voiceSystem.isEnabled) {
+            button.style.backgroundColor = '#10B981';
+            icon.className = 'fas fa-microphone';
+            showVoiceNotification('Voice Enabled');
+            console.log('Voice enabled successfully');
+        } else {
+            button.style.backgroundColor = '#EF4444';
+            icon.className = 'fas fa-microphone-slash';
+            showVoiceNotification('Voice Disabled');
+            console.log('Voice disabled successfully');
+        }
+    } catch (error) {
+        console.error('Error toggling voice:', error);
+        showVoiceNotification('Error: ' + error.message);
+    }
+}
+
+function showVoiceNotification(message) {
+    console.log('Showing notification:', message);
+    
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 10000;
+        background: #1F2937; color: white; padding: 12px 20px;
+        border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        font-size: 14px; font-weight: 500;
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 300);
+    }, 2000);
+}
+
+// Add slide-in animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize voice button state and add click listener
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing voice button...');
+    
+    setTimeout(() => {
+        const button = document.getElementById('voice-control-button');
+        if (button) {
+            console.log('Voice button found, adding click listener...');
+            
+            // Add click listener as backup
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Voice button clicked via addEventListener');
+                toggleVoiceControl();
+            });
+            
+            // Set initial state
+            if (window.VoiceNotifications && window.voiceSystem) {
+                const icon = button.querySelector('i');
+                if (window.voiceSystem.isEnabled) {
+                    button.style.backgroundColor = '#10B981';
+                    console.log('Voice button set to enabled state');
+                } else {
+                    button.style.backgroundColor = '#EF4444';
+                    icon.className = 'fas fa-microphone-slash';
+                    console.log('Voice button set to disabled state');
+                }
+            } else {
+                console.log('Voice system not ready yet, setting default state');
+                button.style.backgroundColor = '#F59E0B'; // Yellow for loading
+            }
+        } else {
+            console.error('Voice button not found!');
+        }
+    }, 2000); // Increased timeout
+});
+
+// Also add global click listener as backup
+document.addEventListener('click', function(e) {
+    if (e.target.closest('#voice-control-button')) {
+        e.preventDefault();
+        console.log('Voice button clicked via global listener');
+        toggleVoiceControl();
+    }
+});
+
+// Debug function
+window.testVoice = function() {
+    console.log('Testing voice system...');
+    console.log('VoiceNotifications:', typeof window.VoiceNotifications);
+    console.log('voiceSystem:', typeof window.voiceSystem);
+    console.log('SimpleVoiceSystem:', typeof window.SimpleVoiceSystem);
+    console.log('speechSynthesis:', 'speechSynthesis' in window);
+    console.log('button:', document.getElementById('voice-control-button'));
+    
+    // Test simple voice system directly
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance('Voice system is working!');
+        utterance.volume = 0.8;
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+        console.log('Test speech sent successfully');
+    } else {
+        alert('Speech synthesis not supported by this browser');
+    }
+    
+    if (window.VoiceNotifications) {
+        window.VoiceNotifications.speak('Voice system is working!');
+    } else {
+        alert('Voice system not loaded yet');
+    }
+};
+
+// Auto-test on page load
+setTimeout(function() {
+    console.log('Auto-testing voice system...');
+    if ('speechSynthesis' in window) {
+        console.log('Speech synthesis is supported');
+        if (!window.voiceSystemLoaded) {
+            console.log('Voice system not loaded, trying simple system...');
+            if (window.SimpleVoiceSystem && window.SimpleVoiceSystem.init()) {
+                console.log('Simple voice system initialized successfully');
+                window.VoiceNotifications = window.SimpleVoiceSystem;
+                window.voiceSystem = window.SimpleVoiceSystem;
+                window.voiceSystemLoaded = true;
+                
+                // Update button to green
+                const button = document.getElementById('voice-control-button');
+                if (button) {
+                    button.style.backgroundColor = '#10B981';
+                }
+            }
+        }
+    } else {
+        console.log('Speech synthesis not supported');
+    }
+}, 3000);
+</script>
+
+<!-- Load JavaScript at the end of body -->
+    <!-- JavaScript is already loaded above via @vite -->
+    
+    <!-- Performance Optimization -->
+    <!-- Performance optimization scripts are currently disabled -->
+
+</body>
+</html>
